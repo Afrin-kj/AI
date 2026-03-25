@@ -1,0 +1,18 @@
+function saveGmailAttachments() {
+  var folder = DriveApp.getFolderById("1_ROFNWbmwNWd76Wmo35-U3y0DNe_ZbN2");
+  var threads = GmailApp.search("has:attachment is:unread");
+
+  threads.forEach(function(thread) {
+    var messages = thread.getMessages();
+
+    messages.forEach(function(message) {
+      var attachments = message.getAttachments();
+
+      attachments.forEach(function(file) {
+        folder.createFile(file);
+      });
+
+      message.markRead(); // avoid duplicate saving
+    });
+  });
+}
